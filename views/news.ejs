@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= newsItem.title %> - 江西软件职业技术大学校园新闻系统</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>江西软件职业技术大学校园新闻系统</h1>
+        <nav>
+            <a href="/">首页</a>
+            <% if (user.role === 'admin') { %>
+                <a href="/add">添加新闻</a>
+            <% } %>
+            <a href="/logout">注销 (<%= user.username %>)</a>
+        </nav>
+    </header>
+    <main>
+        <article class="news-detail">
+            <h2><%= newsItem.title %></h2>
+            <p class="date"><%= newsItem.date %> | <%= newsItem.category %></p>
+            <div class="content">
+                <%= newsItem.content %>
+            </div>
+            <% if (user.role === 'admin') { %>
+                <div class="actions">
+                    <a href="/edit/<%= newsItem.id %>" class="edit-btn">编辑</a>
+                    <form action="/delete/<%= newsItem.id %>" method="POST" class="delete-form">
+                        <button type="submit" class="delete-btn">删除</button>
+                    </form>
+                </div>
+            <% } %>
+        </article>
+    </main>
+    <footer>
+        <p>&copy; 2023 江西软件职业技术大学校园新闻系统</p>
+    </footer>
+</body>
+</html>

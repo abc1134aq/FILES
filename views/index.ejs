@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>江西软件职业技术大学校园新闻系统</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>江西软件职业技术大学校园新闻系统</h1>
+        <nav>
+            <a href="/">首页</a>
+            <% if (user.role === 'admin') { %>
+                <a href="/add">添加新闻</a>
+            <% } %>
+            <a href="/logout">注销 (<%= user.username %>)</a>
+        </nav>
+    </header>
+    <main>
+        <div class="filters">
+            <div class="categories">
+                <a href="/" class="<%= !currentCategory ? 'active' : '' %>">全部</a>
+                <% categories.forEach(cat => { %>
+                    <a href="/?category=<%= cat %>" class="<%= currentCategory === cat ? 'active' : '' %>"><%= cat %></a>
+                <% }); %>
+            </div>
+            <form action="/" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="搜索新闻..." value="<%= search %>">
+                <button type="submit">搜索</button>
+            </form>
+        </div>
+        <h2>最新新闻</h2>
+        <ul class="news-list">
+            <% news.forEach(item => { %>
+                <li>
+                    <h3><a href="/news/<%= item.id %>"><%= item.title %></a></h3>
+                    <p class="date"><%= item.date %> | <%= item.category %></p>
+                    <% if (user.role === 'admin') { %>
+                        <div class="actions">
+                            <a href="/edit/<%= item.id %>" class="edit-btn">编辑</a>
+                            <form action="/delete/<%= item.id %>" method="POST" class="delete-form">
+                                <button type="submit" class="delete-btn">删除</button>
+                            </form>
+                        </div>
+                    <% } %>
+                </li>
+            <% }); %>
+        </ul>
+    </main>
+    <footer>
+        <p>&copy; 2023 江西软件职业技术大学校园新闻系统</p>
+    </footer>
+</body>
+</html>
